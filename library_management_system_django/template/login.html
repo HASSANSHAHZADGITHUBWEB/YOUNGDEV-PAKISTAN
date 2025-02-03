@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Entry Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #04AA6D;
+        }
+
+        input[type="submit"] {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #039f5b;
+        }
+
+        .search-results {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .search-results h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .search-results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .search-results li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            input[type="submit"] {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+    <script>
+        // JavaScript function to validate input before form submission
+        function validateForm() {
+            const bookName = document.getElementById("bookname").value;
+            if (bookName === "") {
+                alert("Please enter a valid book name.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h1>HERE YOU CHECK STATUS OF BOOK</h1>
+    <div class="container">
+        <h2>Enter Book Details</h2>
+        <form action="" method="POST" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <label for="bookname">Book Name:</label>
+            <input type="text" id="bookname" name="bookname" placeholder="Enter the book name" required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    {% if list %}
+        <div class="container search-results">
+            <h3>Search Results:</h3>
+            <ul>
+                {% for book in list %}
+                    <li>
+                        <strong>Book Name:</strong> {{ book.bname }}<br>
+                        <strong>Book ID:</strong> {{ book.bookid }}<br>
+                        <strong>Status:</strong> {{ book.bookstatus }}<br>
+                        <strong>ISBN:</strong> {{ book.bisbn }}<br>
+                        <strong>Slot:</strong> {{ book.slot }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="container">
+            <p>No books found.</p>
+        </div>
+    {% endif %}
+</body>
+</html>
